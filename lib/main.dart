@@ -1,20 +1,14 @@
 import 'package:travel_ease/AuthScreens/SplashScreen.dart';
+import 'package:travel_ease/firebase_options.dart';
 
 import 'constants.dart';
 
 void main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
-
-  // await Firebase.initializeApp(
-  //     //  options:  const FirebaseOptions(
-  //     //   apiKey:'AIzaSyBRwCx_7VDQjaOY2pKEoaGEDQxDoPReD2E', // Your apiKey
-  //     //   appId: '1:773400151234:web:7cce499908c0158539a75b',
-  //     //   messagingSenderId: '773400151234',// Your messagingSenderId
-  //     //   projectId: 'pak-riders',
-  //     // ),
-
-  //     );
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

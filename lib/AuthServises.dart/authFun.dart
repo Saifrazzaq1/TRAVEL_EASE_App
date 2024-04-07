@@ -1,9 +1,9 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, deprecated_member_use
 
 import '../constants.dart';
 
 class AuthServices {
-  static signupUser(String email, String password, String name, String address,
+  static signupUser(String email, String password, String name, String number,
       BuildContext context) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
@@ -12,9 +12,10 @@ class AuthServices {
       await FirebaseAuth.instance.currentUser!.updateDisplayName(name);
       await FirebaseAuth.instance.currentUser!.updateEmail(email);
       await FirebaseAuth.instance.currentUser!.updatePassword(password);
-      await FirebaseAuth.instance.currentUser!.updateDisplayName(address);
+      await FirebaseAuth.instance.currentUser!
+          .updatePhoneNumber(number as PhoneAuthCredential);
       await FirestoreServices.saveUser(
-          name, email, password, address, userCredential.user!.uid);
+          name, email, password, number, userCredential.user!.uid);
       // Get.to(verifyScreen());
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('Verification Email sent')));

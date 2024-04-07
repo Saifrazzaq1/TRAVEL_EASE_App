@@ -6,6 +6,7 @@ class CustomInputField extends StatelessWidget {
   final Color backgroundColor;
   final Color iconColor;
   final Color placeholderColor;
+  final Key? key;
 
   CustomInputField({
     required this.icon,
@@ -13,6 +14,7 @@ class CustomInputField extends StatelessWidget {
     required this.backgroundColor,
     required this.iconColor,
     required this.placeholderColor,
+    this.key, // Initialize the key parameter
   });
 
   @override
