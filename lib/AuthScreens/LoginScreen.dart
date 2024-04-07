@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:travel_ease/AuthScreens/SignUp.dart';
-
 import '../constants.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -64,6 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: TextButton(
                     onPressed: () {
                       // Forgot password screen
+                      Get.to(() => ForgotPassScreen());
                     },
                     child: Text(
                       'Forgot Password ?',

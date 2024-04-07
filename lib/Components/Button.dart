@@ -13,7 +13,7 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        width: 350,
+        width: 380,
         height: 60,
         child: MaterialButton(
           textColor: Colors.white,
