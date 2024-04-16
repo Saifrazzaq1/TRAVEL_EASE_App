@@ -1,8 +1,11 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, unnecessary_null_comparison
+
+import 'dart:math';
 
 import 'package:flutter/services.dart';
 import 'package:travel_ease/AuthServises.dart/authFun.dart';
-
+import 'package:travel_ease/Utils/Utils.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import '../constants.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -15,8 +18,12 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   var text;
   final _formKey = GlobalKey<FormState>();
+  TextEditingController countryController = TextEditingController();
+  final phoneNumberController = TextEditingController();
+  int currentStep = 0;
   @override
   void initState() {
+    countryController.text = "+92";
     super.initState();
     setState(() {
       RefreshIndicatorState;
@@ -59,40 +66,341 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   SizedBox(
                     height: 60,
                   ),
-                  CustomInputField(
-                    key: ValueKey('fullname'),
-                    icon: Icons.person_outline,
-                    hintText: 'Name',
-                    backgroundColor: Colors.white,
-                    iconColor: Color(0xff606470),
-                    placeholderColor: Color(0xff606470),
+                  Container(
+                    height: 60.0,
+                    padding: EdgeInsets.symmetric(horizontal: 30.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(40.0),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.25),
+                          offset: Offset(0, -7), // Move shadow up
+                          blurRadius: 5,
+                          spreadRadius:
+                              1, // Spread radius is negative for inner shadow
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.person_outline,
+                          color: Color(0xff606470),
+                        ),
+                        SizedBox(
+                          width: 10.0,
+                        ),
+                        Expanded(
+                          child: TextFormField(
+                            key: const ValueKey('fullname'),
+                            decoration: InputDecoration(
+                              hintText: 'Name',
+                              hintStyle: TextStyle(
+                                color: Color(0xff606470),
+                              ),
+                              border: InputBorder.none,
+                            ),
+
+                            keyboardType: TextInputType.name,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter(
+                                  RegExp(r'[a-zA-Z]+|\s'),
+                                  allow: true)
+                            ], // Only numbers can be entered
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                Utils().toastMessage(
+                                  message: 'Please Enter Full Name',
+                                  backgroundColor: Colors
+                                      .red, // Pass your desired background color here
+                                );
+                              }
+                            },
+                            onSaved: (value) {
+                              setState(() {
+                                fullname = value!;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   SizedBox(height: 30.0),
-                  CustomInputField(
-                    key: ValueKey('number'),
-                    icon: Icons.phone_outlined,
-                    hintText: 'Phone Number',
-                    backgroundColor: Colors.white,
-                    iconColor: Color(0xff606470),
-                    placeholderColor: Color(0xff606470),
+                  Container(
+                    height: 60.0,
+                    padding: EdgeInsets.symmetric(horizontal: 30.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(40.0),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.25),
+                          offset: Offset(0, -7), // Move shadow up
+                          blurRadius: 5,
+                          spreadRadius:
+                              1, // Spread radius is negative for inner shadow
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.phone_outlined,
+                          color: Color(0xff606470),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        SizedBox(
+                          width: 40,
+                          child: TextFormField(
+                            controller: countryController,
+                            keyboardType: TextInputType.number,
+                            validator: (value) {
+                              if (value!.isEmpty && fullname.isNotEmpty) {
+                                Utils().toastMessage(
+                                  message: 'Please Enter Phone Number',
+                                  backgroundColor: Colors
+                                      .red, // Pass your desired background color here
+                                );
+                              }
+                            },
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                            ),
+                          ),
+                        ),
+                        const Text(
+                          "|",
+                          style: TextStyle(fontSize: 33, color: Colors.grey),
+                        ),
+                        const SizedBox(
+                          width: 20,
+                          height: 40,
+                        ),
+                        Expanded(
+                          child: TextFormField(
+                            controller: phoneNumberController,
+                            onChanged: (value) {
+                              number = value;
+                            },
+                            validator: (value) {
+                              if (value!.isEmpty && fullname.isNotEmpty) {
+                                Utils().toastMessage(
+                                  message: 'Please Enter Phone Number',
+                                  backgroundColor: Colors
+                                      .red, // Pass your desired background color here
+                                );
+                              }
+                            },
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              hintText: "Phone Number",
+                            ),
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Container(
+                  //   height: 60.0,
+                  //   padding: EdgeInsets.symmetric(horizontal: 30.0),
+                  //   decoration: BoxDecoration(
+                  //     borderRadius: BorderRadius.circular(40.0),
+                  //     color: Colors.white,
+                  //     boxShadow: [
+                  //       BoxShadow(
+                  //         color: Colors.black.withOpacity(0.25),
+                  //         offset: Offset(0, -7), // Move shadow up
+                  //         blurRadius: 5,
+                  //         spreadRadius:
+                  //             1, // Spread radius is negative for inner shadow
+                  //       ),
+                  //     ],
+                  //   ),
+                  //   child: Row(
+                  //     children: [
+                  // Icon(
+                  //   Icons.phone_outlined,
+                  //   color: Color(0xff606470),
+                  // ),
+
+                  //       Expanded(
+                  //         flex: 3,
+                  //         child: Container(
+                  //           height: 30, // Set the desired height
+                  //           width: double.infinity, // Set the desired width
+
+                  //           child: IntlPhoneField(
+                  //             decoration: InputDecoration(
+                  //               border: InputBorder.none, // Remove the border
+                  //               labelText: 'Phone Number',
+                  //             ),
+                  //             initialCountryCode: 'IN',
+                  //             onChanged: (phone) {
+                  //               print(phone.completeNumber);
+                  //             },
+                  //           ),
+                  //         ),
+                  //       ),
+
+                  //       // Expanded(
+                  //       //   flex: 3,
+                  //       //   child: TextFormField(
+                  //       //     key: ValueKey('number'),
+                  //       //     keyboardType: TextInputType.number,
+                  //       //     decoration: InputDecoration(
+                  //       //       hintText: 'Phone Number',
+                  //       //       hintStyle: TextStyle(
+                  //       //         color: Color(0xff606470),
+                  //       //       ),
+                  //       //       border: InputBorder.none,
+                  //       //     ),
+                  //       //     // Only numbers can be entered
+                  //       //     validator: (value) {
+                  //       //       if (value!.isEmpty && fullname.isNotEmpty) {
+                  //       //         Utils().toastMessage(
+                  //       //           message: 'Please Enter Phone Number',
+                  //       //           backgroundColor: Colors
+                  //       //               .red, // Pass your desired background color here
+                  //       //         );
+                  //       //       }
+                  //       //     },
+                  //       //     onSaved: (value) {
+                  //       //       setState(() {
+                  //       //         number = value!;
+                  //       //       });
+                  //       //     },
+                  //       //   ),
+                  //       // ),
+                  //     ],
+                  //   ),
+                  // ),
+                  SizedBox(height: 30.0),
+                  Container(
+                    height: 60.0,
+                    padding: EdgeInsets.symmetric(horizontal: 30.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(40.0),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.25),
+                          offset: Offset(0, -7), // Move shadow up
+                          blurRadius: 5,
+                          spreadRadius:
+                              1, // Spread radius is negative for inner shadow
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.email_outlined,
+                          color: Color(0xff606470),
+                        ),
+                        SizedBox(
+                          width: 10.0,
+                        ),
+                        Expanded(
+                          child: TextFormField(
+                            key: ValueKey('email'),
+                            decoration: InputDecoration(
+                              hintText: 'Email',
+                              hintStyle: TextStyle(
+                                color: Color(0xff606470),
+                              ),
+                              border: InputBorder.none,
+                            ),
+                            validator: (value) {
+                              if (value!.isEmpty &&
+                                  fullname.isNotEmpty &&
+                                  number.isNotEmpty &&
+                                  !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                                      .hasMatch(value)) {
+                                Utils().toastMessage(
+                                  message: 'Please Enter an Email',
+                                  backgroundColor: Colors
+                                      .red, // Pass your desired background color here
+                                );
+                              }
+                            },
+                            onSaved: (value) {
+                              setState(() {
+                                email = value!;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   SizedBox(height: 30.0),
-                  CustomInputField(
-                    key: ValueKey('email'),
-                    icon: Icons.email_outlined,
-                    hintText: 'Email',
-                    backgroundColor: Colors.white,
-                    iconColor: Color(0xff606470),
-                    placeholderColor: Color(0xff606470),
-                  ),
-                  SizedBox(height: 30.0),
-                  CustomInputField(
-                    key: ValueKey('password'),
-                    icon: Icons.lock_outline,
-                    hintText: 'Password',
-                    backgroundColor: Colors.white,
-                    iconColor: Color(0xff606470),
-                    placeholderColor: Color(0xff606470),
+                  Container(
+                    height: 60.0,
+                    padding: EdgeInsets.symmetric(horizontal: 30.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(40.0),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.25),
+                          offset: Offset(0, -7), // Move shadow up
+                          blurRadius: 5,
+                          spreadRadius:
+                              1, // Spread radius is negative for inner shadow
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.lock_outline,
+                          color: Color(0xff606470),
+                        ),
+                        SizedBox(
+                          width: 10.0,
+                        ),
+                        Expanded(
+                          child: TextFormField(
+                            key: const ValueKey('password'),
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              hintText: 'Password',
+                              hintStyle: TextStyle(
+                                color: Color(0xff606470),
+                              ),
+                              border: InputBorder.none,
+                            ),
+                            validator: (value) {
+                              if (value!.isEmpty &&
+                                  fullname.isNotEmpty &&
+                                  number.isNotEmpty &&
+                                  email.isNotEmpty) {
+                                Utils().toastMessage(
+                                  message: 'Please Enter a Password',
+                                  backgroundColor: Colors
+                                      .red, // Pass your desired background color here
+                                );
+                              }
+                            },
+                            onSaved: (value) {
+                              setState(() {
+                                password = value!;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   SizedBox(
                     height: 6.0,
@@ -100,45 +408,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   const SizedBox(
                     height: 60,
                   ),
-                  // CustomButton(
-                  //   buttonText: 'Sign up',
-                  //   onPressed: () async {
-                  //     _formKey.currentState!.save();
-                  //     try {
-                  //       await AuthServices.signupUser(
-                  //         email,
-                  //         password,
-                  //         fullname,
-                  //         number,
-                  //         context,
-                  //       );
-                  //       // Signup successful, navigate to the next screen
-                  //       // Navigator.of(context).pushReplacement(
-                  //       //   MaterialPageRoute(builder: (context) => NextScreen()),
-                  //       // );
-                  //     } catch (error) {
-                  //       // Signup failed, show error message
-                  //       showDialog(
-                  //         context: context,
-                  //         builder: (BuildContext context) {
-                  //           return AlertDialog(
-                  //             title: Text('Sign Up Failed'),
-                  //             content: Text(
-                  //                 'An error occurred during signup. Please try again.'),
-                  //             actions: <Widget>[
-                  //               TextButton(
-                  //                 onPressed: () {
-                  //                   Navigator.of(context).pop();
-                  //                 },
-                  //                 child: Text('OK'),
-                  //               ),
-                  //             ],
-                  //           );
-                  //         },
-                  //       );
-                  //     }
-                  //   },
-                  // ),
                   CustomButton(
                     buttonText: 'Sign up',
                     onPressed: () async {
@@ -149,42 +418,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       print('Number: $number');
 
                       // Call the signup method directly
-                      try {
-                        await AuthServices.signupUser(
-                          email,
-                          password,
-                          fullname,
-                          number,
-                          context,
-                        );
-                        // Signup successful, navigate to the next screen
-                        // Navigator.of(context).pushReplacement(
-                        //   MaterialPageRoute(builder: (context) => NextScreen()),
-                        // );
-                      } catch (error) {
-                        // Signup failed, show error message
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('Sign Up Failed'),
-                              content: Text(
-                                  'An error occurred during signup. Please try again.'),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text('OK'),
-                                ),
-                              ],
-                            );
-                          },
-                        );
+                      if (_formKey.currentState!.validate()) {
+                        _formKey.currentState!.save();
+
+                        // Call the signup method
+                        AuthServices.signupUser(
+                            email, password, fullname, number, context);
+                        //  Get.off(()=> ChossScreen());
                       }
                     },
                   ),
-
                   const SizedBox(
                     height: 20,
                   ),

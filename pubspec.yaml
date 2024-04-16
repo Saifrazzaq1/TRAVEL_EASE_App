@@ -42,6 +42,12 @@ dependencies:
   firebase_core: ^2.28.0
   firebase_storage: ^11.7.0
   cloud_firestore: ^4.16.0
+  fluttertoast: ^8.2.4
+  shared_preferences: ^2.2.2
+  convex_bottom_bar: ^3.2.0
+  carousel_slider: ^4.2.1
+  intl_phone_field: ^3.2.0
+  flutter_redux: ^0.10.0
   
 
 dev_dependencies:
