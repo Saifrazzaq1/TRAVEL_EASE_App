@@ -1,7 +1,7 @@
-// main.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
+import 'package:travel_ease/AdminSide/AdminHome.dart';
 import 'package:travel_ease/UserSide/BottomBar.dart';
 import 'package:travel_ease/firebase_options.dart';
 import './Redux/wishlist_actions.dart';
@@ -47,13 +47,21 @@ class MyApp extends StatelessWidget {
       ),
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        home: StreamBuilder(
+        home: StreamBuilder<User?>(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return MyHomePage();
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator(); // Show loader while checking auth state
+            } else if (snapshot.hasData) {
+              // User is logged in
+              final currentUser = snapshot.data!;
+              if (currentUser.email == 'admin.te@gmail.com') {
+                return AdminScreen(); // Navigate to admin screen
+              } else {
+                return MyHomePage(); // Navigate to user home page
+              }
             } else {
-              return SplashScreen();
+              return SplashScreen(); // User is not logged in
             }
           },
         ),

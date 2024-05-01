@@ -253,7 +253,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   await FirebaseAuth.instance.signOut();
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                    MaterialPageRoute(builder: (context) => IntroScreen()),
                   );
                   //Get.to(()=>IntroScreen());
                 },

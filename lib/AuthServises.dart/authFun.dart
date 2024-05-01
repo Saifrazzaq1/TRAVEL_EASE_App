@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, deprecated_member_use
 
+import 'package:travel_ease/AdminSide/AdminHome.dart';
 import 'package:travel_ease/AuthScreens/verifyScreen.dart';
 import 'package:travel_ease/Utils/Utils.dart';
 
@@ -52,22 +53,95 @@ class AuthServices {
     }
   }
 
+//   static signinUser(String email, String password, BuildContext context) async {
+//     try {
+//       await FirebaseAuth.instance
+//           .signInWithEmailAndPassword(email: email, password: password);
+//       // If login is successful, navigate to HomeScreenUser
+//       // Reset navigation stack and navigate to HomeScreenUser
+//       Navigator.pushAndRemoveUntil(
+//         context,
+//         MaterialPageRoute(builder: (context) => verifyScreen()),
+//         (route) => false, // Remove all routes from stack
+//       );
+//       // Show success message using toastMessage
+//       Utils().toastMessage(
+//         message: 'Login Successfully',
+//         backgroundColor: Colors.green,
+//       );
+//     } on FirebaseAuthException catch (e) {
+//       // Catch FirebaseAuthException and handle different error cases
+//       if (e.code == 'wrong-password') {
+//         // If user not found, show error message
+//         Utils().toastMessage(
+//           message: 'Password is incorrect',
+//           backgroundColor: Colors.red,
+//         );
+//       } else if (e.code == 'network-request-failed') {
+//         // If wrong password, show error message
+//         Utils().toastMessage(
+//           message: 'Network request Failed',
+//           backgroundColor: Colors.red,
+//         );
+//       } else {
+//         // If other FirebaseAuthException occurs, show error message
+//         Utils().toastMessage(
+//           message: 'Error: ${e.message}',
+//           backgroundColor: Colors.red,
+//         );
+//       }
+//     } catch (e) {
+//       // Catch any other unexpected errors and show generic error message
+//       Utils().toastMessage(
+//         message: 'An unexpected error occurred',
+//         backgroundColor: Colors.red,
+//       );
+//     }
+//   }
+// }
   static signinUser(String email, String password, BuildContext context) async {
     try {
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
-      // If login is successful, navigate to HomeScreenUser
-      // Reset navigation stack and navigate to HomeScreenUser
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => verifyScreen()),
-        (route) => false, // Remove all routes from stack
+      // Perform Firebase sign-in
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
       );
-      // Show success message using toastMessage
-      Utils().toastMessage(
-        message: 'Login Successfully',
-        backgroundColor: Colors.green,
-      );
+
+      // If login is successful
+      if (userCredential.user != null) {
+        // Retrieve the current user's email from Firebase
+        String currentUserEmail = FirebaseAuth.instance.currentUser!.email!;
+
+        // Navigate based on user's email
+        if (currentUserEmail == 'admin.te@gmail.com') {
+          // Navigate to admin screen
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AdminScreen(),
+            ),
+          );
+
+          // Show success message using toastMessage
+          Utils().toastMessage(
+            message: 'Admin Login Successfully',
+            backgroundColor: Colors.green,
+          );
+        } else {
+          // Navigate to verifyScreen for regular users
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => verifyScreen()),
+          );
+
+          // Show success message using toastMessage
+          Utils().toastMessage(
+            message: 'Login Successfully',
+            backgroundColor: Colors.green,
+          );
+        }
+      }
     } on FirebaseAuthException catch (e) {
       // Catch FirebaseAuthException and handle different error cases
       if (e.code == 'wrong-password') {
