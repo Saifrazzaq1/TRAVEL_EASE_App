@@ -28,11 +28,12 @@ class AuthServices {
       );
       // Get.to(verifyScreen());
       // Reset navigation stack and navigate to HomeScreenUser
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => verifyScreen()),
-        (route) => false, // Remove all routes from stack
-      );
+      // Navigator.pushAndRemoveUntil(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => verifyScreen()),
+      //   (route) => false, // Remove all routes from stack
+      // );
+      Get.offAll(verifyScreen());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         Utils().toastMessage(
@@ -116,13 +117,13 @@ class AuthServices {
         // Navigate based on user's email
         if (currentUserEmail == 'admin.te@gmail.com') {
           // Navigate to admin screen
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AdminScreen(),
-            ),
-          );
-
+          // Navigator.pushReplacement(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => AdminScreen(),
+          //   ),
+          // );
+          Get.offAll(AdminScreen());
           // Show success message using toastMessage
           Utils().toastMessage(
             message: 'Admin Login Successfully',
@@ -130,11 +131,11 @@ class AuthServices {
           );
         } else {
           // Navigate to verifyScreen for regular users
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => verifyScreen()),
-          );
-
+          // Navigator.pushReplacement(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => verifyScreen()),
+          // );
+          Get.offAll(verifyScreen());
           // Show success message using toastMessage
           Utils().toastMessage(
             message: 'Login Successfully',

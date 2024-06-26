@@ -29,7 +29,7 @@ class _ForgotPassScreenState extends State<ForgotPassScreen> {
               child: Column(
                 children: [
                   SizedBox(
-                    height: 20,
+                    height: 10,
                   ),
                   Align(
                     alignment: Alignment.topLeft,
@@ -47,7 +47,7 @@ class _ForgotPassScreenState extends State<ForgotPassScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 70,
+                    height: 30,
                   ),
                   Text(
                     'Forgot Passord ?',

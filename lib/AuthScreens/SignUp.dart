@@ -30,6 +30,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     });
   }
 
+  bool _isPasswordVisible = false;
   String email = '';
   String password = '';
   String fullname = '';
@@ -130,7 +131,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   SizedBox(height: 30.0),
                   Container(
                     height: 60.0,
-                    padding: EdgeInsets.symmetric(horizontal: 30.0),
+                    padding: EdgeInsets.only(
+                      left: 30,
+                    ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(40.0),
                       color: Colors.white,
@@ -145,8 +148,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ],
                     ),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Icon(
                           Icons.phone_outlined,
@@ -180,7 +181,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         const SizedBox(
                           width: 20,
-                          height: 40,
+                          height: 60,
                         ),
                         Expanded(
                           child: TextFormField(
@@ -189,13 +190,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               number = value;
                             },
                             validator: (value) {
-                              if (value!.isEmpty && fullname.isNotEmpty) {
+                              if (value == null || value.isEmpty) {
                                 Utils().toastMessage(
-                                  message: 'Please Enter Phone Number',
-                                  backgroundColor: Colors
-                                      .red, // Pass your desired background color here
+                                  message: 'Please enter number',
+                                  backgroundColor: Colors.red,
                                 );
+                                // return 'Please enter phone number';
+                              } else if (value.length != 10) {
+                                Utils().toastMessage(
+                                  message: 'Phone number must be 10 digits',
+                                  backgroundColor: Colors.red,
+                                );
+                                // return 'Phone number must be 10 digits';
+                              } else if (value.length > 10) {
+                                Utils().toastMessage(
+                                  message: 'Phone number must be 10 digits',
+                                  backgroundColor: Colors.red,
+                                );
+                                // return 'Phone number must be 10 digits';
                               }
+                              return null;
                             },
                             decoration: const InputDecoration(
                               border: InputBorder.none,
@@ -372,13 +386,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         Expanded(
                           child: TextFormField(
                             key: const ValueKey('password'),
-                            obscureText: true,
+                            // controller: _passwordController,
+                            obscureText: !_isPasswordVisible,
                             decoration: InputDecoration(
                               hintText: 'Password',
                               hintStyle: TextStyle(
                                 color: Color(0xff606470),
                               ),
                               border: InputBorder.none,
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _isPasswordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: Color(0xff606470),
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _isPasswordVisible = !_isPasswordVisible;
+                                  });
+                                },
+                              ),
                             ),
                             validator: (value) {
                               if (value!.isEmpty &&
@@ -387,10 +415,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   email.isNotEmpty) {
                                 Utils().toastMessage(
                                   message: 'Please Enter a Password',
-                                  backgroundColor: Colors
-                                      .red, // Pass your desired background color here
+                                  backgroundColor: Colors.red,
                                 );
+                                return 'Please Enter a Password';
                               }
+                              return null;
                             },
                             onSaved: (value) {
                               setState(() {

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:travel_ease/AdminSide/UploadTour.dart';
 import 'package:travel_ease/AdminSide/UserManage.dart';
 import '../constants.dart'; // assuming you have your constants imported here
 
@@ -14,6 +16,9 @@ class _AdminScreenState extends State<AdminScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Color(0xFFC5DDFF), // Set status bar color
+    ));
     return SafeArea(
       child: Scaffold(
         backgroundColor: Color(0xFFC5DDFF),
@@ -117,6 +122,7 @@ class _AdminScreenState extends State<AdminScreen> {
                     width: 350,
                     child: ElevatedButton(
                       onPressed: () {
+                        Get.to(() => UploadTour());
                         // Add functionality for first button
                       },
                       style: ElevatedButton.styleFrom(

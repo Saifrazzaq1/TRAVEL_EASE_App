@@ -75,21 +75,6 @@ class IntroScreen extends StatelessWidget {
                 const SizedBox(
                   height: 40,
                 ),
-                Center(
-                  child: GestureDetector(
-                    child: const Text(
-                      'Skip',
-                      //textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Color(0xff3277D8),
-                      ),
-                    ),
-                    onTap: () {
-                      Get.to(() => LoginScreen());
-                    },
-                  ),
-                ),
               ],
             ),
           ),

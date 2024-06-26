@@ -1,5 +1,3 @@
-// Redux/wishlist_actions.dart
-
 class AddToWishlistAction {
   final Map<String, dynamic> itemData;
 

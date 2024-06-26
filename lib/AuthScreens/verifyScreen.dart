@@ -81,7 +81,7 @@ class _verifyScreenState extends State<verifyScreen> {
                   ),
                   Center(
                     child: Text(
-                      'Verification Email has been sent Please click the link and verify. Please do not close the app during verifictaion. Thanks',
+                      'Verification has been sent to your mail, Please click the link and verify. Please do not close the app during verification. Thanks',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,

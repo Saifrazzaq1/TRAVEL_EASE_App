@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
+// Update CustomButton to use void Function()? for onPressed
 class CustomButton extends StatelessWidget {
   final String buttonText;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   const CustomButton({
     required this.buttonText,
-    required this.onPressed,
+    this.onPressed, // Make onPressed optional
   });
 
   @override
@@ -22,13 +23,13 @@ class CustomButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(40.0),
           ),
           child: Text(
-            buttonText,
+            buttonText, // Ensure this is never null
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.normal,
             ),
           ),
-          onPressed: onPressed,
+          onPressed: onPressed, // Allow null for onPressed
         ),
       ),
     );

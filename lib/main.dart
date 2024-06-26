@@ -3,6 +3,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:travel_ease/AdminSide/AdminHome.dart';
 import 'package:travel_ease/UserSide/BottomBar.dart';
+import 'package:travel_ease/Utils/ScreenSizes.dart';
 import 'package:travel_ease/firebase_options.dart';
 import './Redux/wishlist_actions.dart';
 import './Redux/wishlist_reducer.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig.init(context);
     return StoreProvider<List<Map<String, dynamic>>>(
       store: Store<List<Map<String, dynamic>>>(
         wishlistReducer,

@@ -5,11 +5,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:travel_ease/UserSide/FavoriteScreen.dart';
 import 'package:travel_ease/UserSide/HomeScreen.dart';
+import 'package:travel_ease/UserSide/Offers.dart';
 import 'package:travel_ease/UserSide/ProfileScreen.dart';
 import 'package:travel_ease/UserSide/SearchScreen.dart';
+import 'package:travel_ease/UserSide/Settings.dart';
 import 'package:travel_ease/UserSide/Trips.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../constants.dart';
 
@@ -64,6 +68,35 @@ class _MyHomePageState extends State<MyHomePage> {
         email = 'User not logged in';
         image = 'User not logged in';
       });
+    }
+  }
+
+  // WhatsApp URL launcher function
+  void _openWhatsApp(String phoneNumber, String message) async {
+    // Construct the WhatsApp URL
+    final String whatsappUrl =
+        'https://wa.me/$phoneNumber?text=${Uri.encodeComponent(message)}';
+
+    // Check if the URL can be launched
+    if (await canLaunch(whatsappUrl)) {
+      await launch(whatsappUrl);
+    } else {
+      throw 'Could not launch $whatsappUrl';
+    }
+  }
+
+  void _contactUs() async {
+    final Email email = Email(
+      body: 'Hi, I need some help',
+      subject: 'Need Help',
+      recipients: ['saifrazzaq23@gmail.com'],
+      isHTML: false,
+    );
+
+    try {
+      await FlutterEmailSender.send(email);
+    } catch (error) {
+      print('Error occurred while sending email: $error');
     }
   }
 
@@ -122,17 +155,17 @@ class _MyHomePageState extends State<MyHomePage> {
                   scaffoldKey.currentState!.closeDrawer();
                 },
               ),
-              ListTile(
-                leading: const Icon(
-                  Icons.wallet_outlined,
-                  size: 30,
-                  color: Color(0xff3277D8),
-                ),
-                title: const Text(
-                  ' My Wallet',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal),
-                ),
-              ),
+              // ListTile(
+              //   leading: const Icon(
+              //     Icons.wallet_outlined,
+              //     size: 30,
+              //     color: Color(0xff3277D8),
+              //   ),
+              //   title: const Text(
+              //     ' My Wallet',
+              //     style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal),
+              //   ),
+              // ),
 
               ListTile(
                 leading: const Icon(
@@ -156,11 +189,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   color: Color(0xff3277D8),
                 ),
                 title: const Text(
-                  'Offers ',
+                  ' Offers ',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal),
                 ),
                 onTap: () {
-                  Navigator.pop(context);
+                  // Navigator.pop(context);
+                  Get.to(Offers());
                 },
               ),
               ListTile(
@@ -174,54 +208,23 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal),
                 ),
                 onTap: () {
-                  //   reachUs() async {
-                  //     var androidNumber =
-                  //         "03023275555"; // Update with your Pakistani WhatsApp number
-
-                  //     var androidUrl =
-                  //         "whatsapp://send?phone=$androidNumber&text=Hi, I need some help";
-
-                  //     var iOSNumber =
-                  //         "03023275555"; // Update with your Pakistani WhatsApp number
-
-                  //     var iOSUrl =
-                  //         "https://wa.me/$iOSNumber?text=${Uri.parse("Hi, I need some help")}";
-
-                  //     if (Platform.isIOS) {
-                  //       if (await canLaunch(iOSUrl)) {
-                  //         await launch(iOSUrl, forceSafariVC: false);
-                  //       } else {
-                  //         print('WhatsApp is not installed');
-                  //       }
-                  //     } else {
-                  //       if (await canLaunch(androidUrl)) {
-                  //         await launch(androidUrl);
-                  //       } else {
-                  //         print('WhatsApp is not installed');
-                  //       }
-                  //     }
-                  //   }
-
-                  //   reachUs();
+                  Get.to(UserSettings());
                 },
               ),
-              ListTile(
-                leading: const Icon(
-                  Icons.support_agent_outlined,
-                  size: 30,
-                  color: Color(0xff3277D8),
-                ),
-                title: const Text(
-                  ' Contact Us ',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal),
-                ),
-                onTap: () {
-                  // final String appLink =
-                  //     'https://PakRiders.com/app'; // Replace with the actual app link
-
-                  // Share.share('Check out this amazing app: $appLink');
-                },
-              ),
+              // ListTile(
+              //   leading: const Icon(
+              //     Icons.support_agent_outlined,
+              //     size: 30,
+              //     color: Color(0xff3277D8),
+              //   ),
+              //   title: const Text(
+              //     ' Contact Us ',
+              //     style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal),
+              //   ),
+              //   onTap: () {
+              //     _contactUs();
+              //   },
+              // ),
               ListTile(
                 leading: const Icon(
                   Icons.help_outline,
@@ -229,10 +232,19 @@ class _MyHomePageState extends State<MyHomePage> {
                   color: Color(0xff3277D8),
                 ),
                 title: const Text(
-                  'Help & support',
+                  ' Help & support',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal),
                 ),
                 onTap: () {
+                  // Define the phone number and message
+                  String phoneNumber =
+                      '+923249470845'; // Replace with the actual phone number
+                  String message =
+                      'Hello! I need Help with Travel Ease.'; // Customize your message
+
+                  // Open WhatsApp
+                  _openWhatsApp(phoneNumber, message);
+
                   // final String appLink =
                   //     'https://PakRiders.com/app'; // Replace with the actual app link
 
@@ -246,7 +258,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   color: Color(0xff3277D8),
                 ),
                 title: const Text(
-                  'LogOut',
+                  ' LogOut',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal),
                 ),
                 onTap: () async {
